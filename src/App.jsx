@@ -9,13 +9,14 @@ import IP from "./pages/IP";
 
 export default function App() {
   //* Check if devtools are open (useless)
+  const devT = () => {console.log("Hello developer :)");}
   useEffect(() => {
     if (devTools.isOpen) {
-      console.log("Hello developer :)");
+      devT()
     }
     window.addEventListener("devtoolschange", (event) => {
       if (event.detail.isOpen) {
-        console.log("Hello developer :)");
+        devT()
       }
     });
   }, []);
