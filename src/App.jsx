@@ -10,18 +10,19 @@ import Homepage from "./pages/homepage/Homepage";
 
 export default function App() {
   //* Check if devtools are open (useless)
-  const devT = () => {console.log("Hello developer :)");}
+  const devT = () => {
+    console.log("Hello developer :)");
+  };
   useEffect(() => {
     if (devTools.isOpen) {
-      devT()
+      devT();
     }
     window.addEventListener("devtoolschange", (event) => {
       if (event.detail.isOpen) {
-        devT()
+        devT();
       }
     });
   }, []);
-
 
   return (
     <div className="App">

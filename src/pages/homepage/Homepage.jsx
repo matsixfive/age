@@ -39,18 +39,14 @@ export default function Homepage() {
     let millisecondsRound = Math.floor(milliseconds);
     remainder = milliseconds - millisecondsRound;
 
-    let all = {
+    return {
       years: yearsRound,
       days: daysRound,
       hours: hoursRound,
       minutes: minutesRound,
       seconds: secondsRound,
       milliseconds: millisecondsRound,
-    };
-
-    console.log(all);
-
-    return all;
+    }
   };
 
   useEffect(() => {
@@ -58,40 +54,53 @@ export default function Homepage() {
 
     const birthday = 1138676554936;
 
+    const fps = 50;
     setInterval(() => {
       let age = Date.now() - birthday;
-      setYearsLeft((18 - age / 1000 / 60 / 60 / 24 / 365.25).toFixed(9));
+      setYearsLeft((18 - (age / (31557600000))).toFixed(9));
       setFormattedAge(findDivisions(age));
-    }, 8);
+    }, 1000 / fps);
   }, []);
   return (
     <>
       {canShow ? (
-        <div>
+        <div className={s.container}>
           {"I'm "}
-          <span className={s.year}>{formattedAge.years.toString()}</span>
-          {" year"}
-          {formattedAge.years == 1 ? null : "s"}
+          <span className={s.timeYear.concat(` ${s.time}`)}>
+            {formattedAge.years.toString()}
+          </span>
+          {" "}
+          {formattedAge.years === 1 ? "year" : "years"}
           {", "}
-          <span className={s.day}>{formattedAge.days.toString()}</span>
-          {" day"}
-          {formattedAge.days == 1 ? null : "s"}
+          <span className={s.timeDay.concat(` ${s.time}`)}>
+            {formattedAge.days.toString()}
+          </span>
+          {" "}
+          {formattedAge.days === 1 ? "day" : "days"}
           {", "}
-          <span className={s.hour}>{formattedAge.hours.toString()}</span>
-          {" hour"}
-          {formattedAge.hours == 1 ? null : "s"}
+          <span className={s.timeHour.concat(` ${s.time}`)}>
+            {formattedAge.hours.toString()}
+          </span>
+          {" "}
+          {formattedAge.hours === 1 ? "hour" : "hours"}
           {", "}
-          <span className={s.minute}>{formattedAge.minutes.toString()}</span>
-          {" minute"}
-          {formattedAge.minutes == 1 ? null : "s"}
+          <span className={s.timeMinute.concat(` ${s.time}`)}>
+            {formattedAge.minutes.toString()}
+          </span>
+          {" "}
+          {formattedAge.minutes === 1 ? "minute" : "minutes"}
           {", "}
-          <span className={s.second}>{formattedAge.seconds.toString().padStart(2, "0")}</span>
-          {" second"}
-          {formattedAge.seconds == 1 ? null : "s"}
+          <span className={s.timeSecond.concat(` ${s.time}`)}>
+            {formattedAge.seconds.toString().padStart(2, "0")}
+          </span>
+          {" "}
+          {formattedAge.seconds === 1 ? "second" : "seconds"}
           {", and "}
-          <span className={s.millisecond}>{formattedAge.milliseconds.toString().padStart(3, "0")}</span>
+          <span className={s.timeMillisecond.concat(` ${s.time}`)}>
+            {formattedAge.milliseconds.toString().padStart(3, "0")}
+          </span>
           {" milliseconds old. There are "}
-          {yearsLeft}
+          <span className={s.timeLeft.concat(` ${s.time}`)}>{yearsLeft}</span>
           {" years until I'm 18 years old."}
         </div>
       ) : null}
