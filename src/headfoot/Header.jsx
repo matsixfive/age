@@ -10,6 +10,7 @@ export default function Header() {
               <Link to="/">Home</Link>
             </li>
             <li><Link to="/joke">Joke</Link></li>
+            <li><Link to="/ip">Ip</Link></li>
             <li>Projects</li>
             <li>Contact</li>
           </ul>

@@ -6,7 +6,6 @@ export default function Joke() {
   const [jokeAvaliable, setJokeAvaliable] = useState(true);
 
   let getJoke = () => {
-    console.log(jokeAvaliable);
     if (jokeAvaliable) {
       axios
         .get("https://icanhazdadjoke.com", {
