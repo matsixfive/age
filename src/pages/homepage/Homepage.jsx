@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import AgeSection from "./AgeSection";
+
 import s from "./homepage.module.css";
 
 export default function Homepage() {
@@ -46,19 +48,21 @@ export default function Homepage() {
       minutes: minutesRound,
       seconds: secondsRound,
       milliseconds: millisecondsRound,
-    }
+    };
   };
 
   useEffect(() => {
     setCanShow(true);
 
+    // 31/01/2006 03:02:00 in epoch time
     const birthday = 1138676554936;
+    const epochToYears = 31557600000;
 
-    const fps = 50;
+    const fps = 53; // odd number gives more random ms digits
     setInterval(() => {
-      let age = Date.now() - birthday;
-      setYearsLeft((18 - (age / (31557600000))).toFixed(9));
-      setFormattedAge(findDivisions(age));
+      let epochAge = Date.now() - birthday;
+      setYearsLeft((18 - epochAge / epochToYears).toFixed(9));
+      setFormattedAge(findDivisions(epochAge));
     }, 1000 / fps);
   }, []);
   return (
@@ -66,40 +70,42 @@ export default function Homepage() {
       {canShow ? (
         <div className={s.container}>
           {"I'm "}
-          <span className={s.timeYear.concat(` ${s.time}`)}>
-            {formattedAge.years.toString()}
-          </span>
-          {" "}
-          {formattedAge.years === 1 ? "year" : "years"}
+          <AgeSection
+            age={formattedAge.years}
+            timePeriod={"year"}
+            styleName={s.timeYear}
+          />
           {", "}
-          <span className={s.timeDay.concat(` ${s.time}`)}>
-            {formattedAge.days.toString()}
-          </span>
-          {" "}
-          {formattedAge.days === 1 ? "day" : "days"}
+          <AgeSection
+            age={formattedAge.days}
+            timePeriod={"day"}
+            styleName={s.timeDay}
+          />
           {", "}
-          <span className={s.timeHour.concat(` ${s.time}`)}>
-            {formattedAge.hours.toString()}
-          </span>
-          {" "}
-          {formattedAge.hours === 1 ? "hour" : "hours"}
+          <AgeSection
+            age={formattedAge.hours}
+            timePeriod={"hour"}
+            styleName={s.timeHour}
+          />
           {", "}
-          <span className={s.timeMinute.concat(` ${s.time}`)}>
-            {formattedAge.minutes.toString()}
-          </span>
-          {" "}
-          {formattedAge.minutes === 1 ? "minute" : "minutes"}
+          <AgeSection
+            age={formattedAge.minutes}
+            timePeriod={"minute"}
+            styleName={s.timeMinute}
+          />
           {", "}
-          <span className={s.timeSecond.concat(` ${s.time}`)}>
-            {formattedAge.seconds.toString().padStart(2, "0")}
-          </span>
-          {" "}
-          {formattedAge.seconds === 1 ? "second" : "seconds"}
+          <AgeSection
+            age={formattedAge.seconds}
+            timePeriod={"second"}
+            styleName={s.timeSecond}
+          />
           {", and "}
-          <span className={s.timeMillisecond.concat(` ${s.time}`)}>
-            {formattedAge.milliseconds.toString().padStart(3, "0")}
-          </span>
-          {" milliseconds old. There are "}
+          <AgeSection
+            age={formattedAge.milliseconds}
+            timePeriod={"millisecond"}
+            styleName={s.timeMillisecond}
+          />
+          {" old. There are "}
           <span className={s.timeLeft.concat(` ${s.time}`)}>{yearsLeft}</span>
           {" years until I'm 18 years old."}
         </div>
