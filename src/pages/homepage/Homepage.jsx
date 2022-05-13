@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import AgeSection from "./AgeSection";
 
-import s from "./homepage.module.css";
+import styles from "./homepage.module.css";
 
 export default function Homepage() {
   const [canShow, setCanShow] = useState(false);
@@ -56,58 +56,68 @@ export default function Homepage() {
 
     // 31/01/2006 03:02:00 in epoch time
     const birthday = 1138676554936;
-    const epochToYears = 31557600000;
+    const epochToDays = 86400000;
 
     const fps = 53; // odd number gives more random ms digits
     setInterval(() => {
       let epochAge = Date.now() - birthday;
-      setYearsLeft((18 - epochAge / epochToYears).toFixed(9));
+      // 18 years in days - current age in days
+      setYearsLeft((6574.5 - epochAge / epochToDays).toFixed(6));
       setFormattedAge(findDivisions(epochAge));
     }, 1000 / fps);
   }, []);
   return (
     <>
       {canShow ? (
-        <div className={s.container}>
+        <div className={styles.container}>
           {"I'm "}
           <AgeSection
             age={formattedAge.years}
             timePeriod={"year"}
-            styleName={s.timeYear}
+            styleName={styles.timeYear}
+            single
           />
           {", "}
           <AgeSection
             age={formattedAge.days}
             timePeriod={"day"}
-            styleName={s.timeDay}
+            styleName={styles.timeDay}
+            single
           />
           {", "}
           <AgeSection
             age={formattedAge.hours}
             timePeriod={"hour"}
-            styleName={s.timeHour}
+            styleName={styles.timeHour}
+            single
           />
           {", "}
           <AgeSection
             age={formattedAge.minutes}
             timePeriod={"minute"}
-            styleName={s.timeMinute}
+            styleName={styles.timeMinute}
+            single
           />
           {", "}
           <AgeSection
             age={formattedAge.seconds}
             timePeriod={"second"}
-            styleName={s.timeSecond}
+            styleName={styles.timeSecond}
+            single
+            pad={2}
           />
           {", and "}
           <AgeSection
             age={formattedAge.milliseconds}
             timePeriod={"millisecond"}
-            styleName={s.timeMillisecond}
+            styleName={styles.timeMillisecond}
+            pad={3}
           />
           {" old. There are "}
-          <span className={s.timeLeft.concat(` ${s.time}`)}>{yearsLeft}</span>
-          {" years until I'm 18 years old."}
+          <span className={styles.timeLeft.concat(` ${styles.time}`)}>
+            {yearsLeft}
+          </span>
+          {" days until I'm 18 years old."}
         </div>
       ) : null}
     </>
