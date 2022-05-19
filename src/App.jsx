@@ -4,9 +4,12 @@ import devTools from "devtools-detect";
 
 import Header from "./headfoot/Header";
 import Footer from "./headfoot/Footer";
+
+import PageNotFound from "./pages/404/PageNotFound";
+
+import Homepage from "./pages/homepage/Homepage";
 import Joke from "./pages/Joke";
 import IP from "./pages/IP";
-import Homepage from "./pages/homepage/Homepage";
 
 export default function App() {
   //* Check if devtools are open (useless)
@@ -34,6 +37,7 @@ export default function App() {
           <Route path="foot" element={<Footer />} />
           <Route path="joke" element={<Joke />} />
           <Route path="ip" element={<IP />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
