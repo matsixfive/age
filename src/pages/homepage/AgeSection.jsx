@@ -1,4 +1,4 @@
-import styles from "./homepage.module.css";
+import styles from "./homepage.module.scss";
 
 export default function AgeSection(props) {
   return (

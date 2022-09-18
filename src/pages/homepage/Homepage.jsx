@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import AgeSection from "./AgeSection";
 
-import styles from "./homepage.module.css";
+import styles from "./homepage.module.scss";
 
 export default function Homepage() {
   const [canShow, setCanShow] = useState(false);
@@ -16,7 +16,11 @@ export default function Homepage() {
   });
   const [yearsLeft, setYearsLeft] = useState();
 
-  const findDivisions = (ms) => {
+  const [showDateSelect, setShowDateSelect] = useState(false);
+  const [targetAge, setTargetAge] = useState(18);
+
+  const findDivisions = ms => {
+    // console.log(ms)
     let years = ms / 1000 / 60 / 60 / 24 / 365.25;
     let yearsRound = Math.floor(years);
     let remainder = (years - yearsRound) * 1000 * 60 * 60 * 24 * 365.25;
@@ -51,75 +55,163 @@ export default function Homepage() {
     };
   };
 
+  // 31/01/2006 03:02:00 in epoch time
+  const myBirthday = 1138676554936;
+  const [birthday, setBirthday] = useState({
+    date: myBirthday,
+    time: 0,
+    dateTime: myBirthday,
+  });
+
+  const epochToDays = 86400000;
+  const oneYearMs = 31557600000;
+
+  const fps = 53; // odd number gives more random ms digits
+
+  let birthdayRenderer = useRef();
+
   useEffect(() => {
+    clearInterval(birthdayRenderer.current);
     setCanShow(true);
 
-    // 31/01/2006 03:02:00 in epoch time
-    const birthday = 1138676554936;
-    const epochToDays = 86400000;
+    birthdayRenderer.current = setInterval(() => {
+      const epochAge = Date.now() - birthday.dateTime;
 
-    const fps = 53; // odd number gives more random ms digits
-    setInterval(() => {
-      let epochAge = Date.now() - birthday;
+      const divisions = findDivisions(epochAge);
+      setFormattedAge(divisions);
+
+      const targetYears =
+        divisions.years < 0
+          ? 0
+          : divisions.years < 18
+          ? 18
+          : Math.ceil(divisions.years / 10) * 10;
+      setTargetAge(targetYears);
+
       // 18 years in days - current age in days
-      setYearsLeft((6574.5 - epochAge / epochToDays).toFixed(6));
-      setFormattedAge(findDivisions(epochAge));
+      // one year is 31557600000 ms
+      setYearsLeft(
+        (
+          (oneYearMs * targetYears) / epochToDays -
+          epochAge / epochToDays
+        ).toFixed(6)
+      );
     }, 1000 / fps);
-  }, []);
+  }, [birthday.dateTime]);
   return (
-    <>
+    <div style={{ minHeight: "100vh", position: "relative" }}>
       {canShow ? (
-        <div className={styles.container}>
-          {"I'm "}
-          <AgeSection
-            age={formattedAge.years}
-            timePeriod={"year"}
-            styleName={styles.timeYear}
-            single
-          />
-          {", "}
-          <AgeSection
-            age={formattedAge.days}
-            timePeriod={"day"}
-            styleName={styles.timeDay}
-            single
-          />
-          {", "}
-          <AgeSection
-            age={formattedAge.hours}
-            timePeriod={"hour"}
-            styleName={styles.timeHour}
-            single
-          />
-          {", "}
-          <AgeSection
-            age={formattedAge.minutes}
-            timePeriod={"minute"}
-            styleName={styles.timeMinute}
-            single
-          />
-          {", "}
-          <AgeSection
-            age={formattedAge.seconds}
-            timePeriod={"second"}
-            styleName={styles.timeSecond}
-            single
-            pad={2}
-          />
-          {", and "}
-          <AgeSection
-            age={formattedAge.milliseconds}
-            timePeriod={"millisecond"}
-            styleName={styles.timeMillisecond}
-            pad={3}
-          />
-          {" old. There are "}
+        <main className={styles.container}>
+          {`${birthday.dateTime === myBirthday ? "I'm" : "You're"} `}
+          {birthday.dateTime > Date.now() ? (
+            " not born yet..."
+          ) : (
+            <>
+              <AgeSection
+                age={formattedAge.years}
+                timePeriod={"year"}
+                styleName={styles.timeYear}
+                single
+              />
+              {", "}
+              <AgeSection
+                age={formattedAge.days}
+                timePeriod={"day"}
+                styleName={styles.timeDay}
+                single
+              />
+              {", "}
+              <AgeSection
+                age={formattedAge.hours}
+                timePeriod={"hour"}
+                styleName={styles.timeHour}
+                single
+              />
+              {", "}
+              <AgeSection
+                age={formattedAge.minutes}
+                timePeriod={"minute"}
+                styleName={styles.timeMinute}
+                single
+              />
+              {", "}
+              <AgeSection
+                age={formattedAge.seconds}
+                timePeriod={"second"}
+                styleName={styles.timeSecond}
+                single
+                pad={2}
+              />
+              {", and "}
+              <AgeSection
+                age={formattedAge.milliseconds}
+                timePeriod={"millisecond"}
+                styleName={styles.timeMillisecond}
+                pad={3}
+              />
+              {" old."}
+            </>
+          )}
+          {" There are "}
           <span className={styles.timeLeft.concat(` ${styles.time}`)}>
             {yearsLeft}
           </span>
-          {" days until I'm 18 years old."}
-        </div>
+          {` days until ${
+            birthday.dateTime === myBirthday ? "I'm" : "you're"
+          } ${targetAge !== 0 ? targetAge + " years old" : " born"}.`}
+        </main>
       ) : null}
-    </>
+      <div className={styles.footer}>
+        {showDateSelect ? (
+          <div className={styles.dateButtons}>
+            <input
+              type="date"
+              onChange={e => {
+                console.log(Date.parse(e.target.valueAsDate));
+                setBirthday({
+                  date: Date.parse(e.target.valueAsDate) || 0,
+                  time: birthday.time,
+                  dateTime: birthday.dateTime,
+                });
+              }}
+            />
+            <input
+              type="time"
+              onChange={e => {
+                console.log(
+                  Date.parse(e.target.valueAsDate),
+                  new Date().getTimezoneOffset() * 1000
+                );
+                setBirthday({
+                  date: birthday.date,
+                  time:
+                    Date.parse(e.target.valueAsDate),
+                  dateTime: birthday.dateTime,
+                });
+              }}
+            />
+            <input
+              type="button"
+              value={"Apply"}
+              onClick={() => {
+                console.table(birthday);
+                setBirthday({
+                  date: birthday.date,
+                  time: birthday.time,
+                  dateTime: birthday.date + birthday.time +
+                  new Date().getTimezoneOffset()*6e4,
+                });
+              }}
+              className={styles.applyButton}
+            />
+          </div>
+        ) : null}
+        <button
+          className={styles.changeButton}
+          onClick={() => setShowDateSelect(!showDateSelect)}>
+          {showDateSelect ? "close" : "change"}
+        </button>
+      </div>
+    </div>
   );
 }

@@ -1,37 +1,85 @@
 .container {
-    max-width: 960px;
-    margin: auto;
-    font-size: 40px;
-    font-family: "Helvetica Neue", Helvetica;
+  max-width: 960px;
+  margin: auto;
+  font-size: 40px;
+  font-family: "Helvetica Neue", Helvetica;
 }
 
 .phrase {
-    overflow-wrap: normal;
+  overflow-wrap: normal;
 }
 
-
 .time {
-    font-weight: bold;
-    font-family: monospace;
-    &Year {
-        color: #ff2727;
-    }
-    &Day {
-        color: #ffb52d;
-    }
-    &Hour {
-        color: #ffff44;
-    }
-    &Minute {
-        color: #3eec3e;
-    }
-    &Second {
-        color: #52c3ff;
-    }
-    &Millisecond {
-        color: #fd79fd;
-    }
-    &Left {
-        color: #dacca1;
-    }
+  font-weight: bold;
+  font-family: monospace;
+  &Year {
+    color: #ff2727;
+  }
+  &Day {
+    color: #ffb52d;
+  }
+  &Hour {
+    color: #ffff44;
+  }
+  &Minute {
+    color: #3eec3e;
+  }
+  &Second {
+    color: #52c3ff;
+  }
+  &Millisecond {
+    color: #fd79fd;
+  }
+  &Left {
+    color: #dacca1;
+  }
+}
+
+.changeButton {
+  background-color: transparent;
+  color: lightblue;
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.dateButtons {
+  display: flex;
+  gap: 10px;
+}
+
+@mixin footerItem {
+  height: 20px;
+  padding: 10px;
+  background: transparent;
+  color: white;
+  border-color: rgb(133, 133, 133);
+  border-style: outset;
+}
+
+.applyButton {
+  @include footerItem();
+  box-sizing: content-box;
+  cursor: pointer;
+  &:active {
+    border-style: inset;
+  }
+}
+
+.footer {
+  margin: 1rem;
+  position: absolute;
+  bottom: 0;
+}
+
+input[type="date"],
+input[type="time"] {
+  @include footerItem();
+  outline: none;
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(100%);
+  }
 }
