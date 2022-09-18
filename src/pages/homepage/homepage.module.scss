@@ -48,6 +48,7 @@
 
 .dateButtons {
   display: flex;
+  overflow-wrap: break-word;
   gap: 10px;
 }
 
