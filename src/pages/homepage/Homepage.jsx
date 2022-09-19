@@ -111,43 +111,43 @@ export default function Homepage() {
                 age={formattedAge.years}
                 timePeriod={"year"}
                 styleName={styles.timeYear}
-                single
+                singular
               />
               {", "}
               <AgeSection
                 age={formattedAge.days}
                 timePeriod={"day"}
                 styleName={styles.timeDay}
-                single
+                singular
               />
               {", "}
               <AgeSection
                 age={formattedAge.hours}
                 timePeriod={"hour"}
                 styleName={styles.timeHour}
-                single
+                singular
               />
               {", "}
               <AgeSection
                 age={formattedAge.minutes}
                 timePeriod={"minute"}
                 styleName={styles.timeMinute}
-                single
+                singular
               />
               {", "}
               <AgeSection
                 age={formattedAge.seconds}
                 timePeriod={"second"}
                 styleName={styles.timeSecond}
-                single
-                pad={2}
+                singular
+                chars={2}
               />
               {", and "}
               <AgeSection
                 age={formattedAge.milliseconds}
                 timePeriod={"millisecond"}
                 styleName={styles.timeMillisecond}
-                pad={3}
+                chars={3}
               />
               {" old."}
             </>
