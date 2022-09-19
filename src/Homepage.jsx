@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 import styles from "./homepage.module.scss";
 
-import {findDivisions} from "../lib/findDivisions";
+import {findDivisions} from "./lib/findDivisions";
 
 export default function Homepage() {
 	const [canShow, setCanShow] = useState(false);
