@@ -9,9 +9,21 @@ export default function Footer({
 	return (
 		<div className={styles.footer}>
 			{/* {showDateSelect ? ( */}
-			<div
+			<form
 				className={styles.dateButtons}
 				style={showDateSelect ? { display: "flex" } : { display: "none" }}
+				onSubmit={(e) => {
+					e.preventDefault();
+					setBirthday({
+						date: birthday.date,
+						time: birthday.time,
+						dateTime:
+							birthday.date +
+							// time from the form minus the utomatic timezone offset that it adds
+							birthday.time +
+							new Date().getTimezoneOffset() * 6e4,
+					});
+				}}
 			>
 				<input
 					type="date"
@@ -39,10 +51,9 @@ export default function Footer({
 					}}
 				/>
 				<input
-					type="button"
+					type="submit"
 					value={"Apply"}
-					onClick={() => {
-						console.table(birthday);
+					/* onClick={() => {
 						setBirthday({
 							date: birthday.date,
 							time: birthday.time,
@@ -51,10 +62,10 @@ export default function Footer({
 								birthday.time +
 								new Date().getTimezoneOffset() * 6e4,
 						});
-					}}
+					}} */
 					className={styles.applyButton}
 				/>
-			</div>
+			</form>
 			{/* ) : null} */}
 			<button
 				className={styles.changeButton}
