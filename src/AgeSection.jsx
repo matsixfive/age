@@ -23,7 +23,7 @@ export default function AgeSection({
       {" " +
         timePeriod +
         // add 's' to end of `timePeriod` if the time is '1' and the `age` prop is `true`
-        (number === 1 && singular ? null : "s")}
+        (number === 1 && singular ? "" : "s")}
     </span>
   );
 }
