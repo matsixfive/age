@@ -1,0 +1,17 @@
+.bar {
+	width: 100%;
+	height: 20px;
+	background-color: #eee;
+	border-radius: 9999px;
+	overflow: hidden;
+	font-size: 0.45em;
+	display:flex;
+	align-items: center;
+	color:black;	
+}
+
+.progress {
+	height: 100%;
+	background-color: #098fdc;
+	border-radius: 9999px;
+}

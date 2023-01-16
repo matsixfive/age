@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from "react";
 
 import AgeSection from "./AgeSection";
 import Footer from "./Footer";
+import Progress from "./Progress";
 
 import styles from "./homepage.module.scss";
 
-import {findDivisions} from "./lib/findDivisions";
+import { findDivisions } from "./lib/findDivisions";
 
 export default function Homepage() {
 	const [canShow, setCanShow] = useState(false);
@@ -21,8 +22,6 @@ export default function Homepage() {
 
 	const [showDateSelect, setShowDateSelect] = useState(false);
 	const [targetAge, setTargetAge] = useState(18);
-
-	
 
 	// 31/01/2006 03:02:00 in epoch time
 	const myBirthday = 1138676554936;
@@ -68,7 +67,7 @@ export default function Homepage() {
 		}, 1000 / fps);
 	}, [birthday.dateTime]);
 	return (
-		<div style={{ minHeight: "100vh", position: "relative" }}>
+		<div style={{ minHeight: "100svh", position: "relative" }}>
 			{canShow ? (
 				<main className={styles.container}>
 					{`${birthday.dateTime === myBirthday ? "I'm" : "You're"} `}
@@ -128,6 +127,14 @@ export default function Homepage() {
 					{` days until ${
 						birthday.dateTime === myBirthday ? "I'm" : "you're"
 					} ${targetAge !== 0 ? targetAge + " years old" : " born"}.`}
+					<div style={{marginTop:"0.5em"}}>
+						<Progress
+							percentage={
+								(Date.now() - birthday.dateTime) /
+								(72.27 * 365.25 * 24 * 60 * 60 * 1000)
+							}
+						/>
+					</div>
 				</main>
 			) : null}
 			<Footer
